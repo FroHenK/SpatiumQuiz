@@ -34,19 +34,19 @@ def add_quiz(quiz):
     conn.commit()
 
 
-def fetch_all_quizes():
+def fetch_all_quizzes():
     conn = get_db()
-    quizes = []
+    quizzes = []
     cur = conn.cursor()
     for var in cur.execute('SELECT id,name,start,finish FROM quiz ORDER BY start').fetchall():
-        quizes.append(Quiz(
+        quizzes.append(Quiz(
             int(var[0]),
             str(var[1]),
             dateutil.parser.parse(str(var[2])),
             dateutil.parser.parse(str(var[3])),
         ))
     cur.close()
-    return quizes
+    return quizzes
 
 
 def fetch_all_questions_by_eid(e_id):

@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 
-from sqldb import fetch_all_quizes
+from sqldb import fetch_all_quizzes
 from Quiz import TextAnswerQuestion
 
 '''Tested on Python 3.5.1'''
@@ -12,8 +12,8 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 @app.route('/')
 def main_page():
-    t = fetch_all_quizes()
-    return render_template("quizList.html", quizez=t)
+    t = fetch_all_quizzes()
+    return render_template("quizList.html", quizzes=t)
 
 
 def get_app():

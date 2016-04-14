@@ -1,6 +1,6 @@
 from views import app
 from flask import request, render_template, session, redirect, url_for
-from sqldb import get_admin, add_quiz
+from sqldb import get_admin, add_quiz, fetch_all_questions_by_eid
 from Quiz import Quiz
 import dateutil.parser
 
@@ -46,3 +46,14 @@ def admin_add_quiz():
         return redirect(url_for('main_page'))
 
     return render_template('addQuiz.html')
+
+
+# Quizzes and questions
+@app.route('/admin/quiz/<quiz_id>/')
+def admin_quiz(quiz_id):
+    return render_template('showQuizAdmin.html', questions=fetch_all_questions_by_eid(quiz_id))
+
+
+@app.route('/admin/question/delete/<q_id>/')
+def admin_delete_question(q_id):
+    return 'Oops... Not implemented yet'  # TODO Implement
