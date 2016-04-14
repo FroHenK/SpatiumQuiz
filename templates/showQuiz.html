@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Questions</div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Data</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for question in questions %}
+
+                <tr class='clickable-row' data-href='url://127.0.0.1:5000/1'>
+                    <td>{{ question.q_id }}</td>
+                    <td>{{ question.type }}</td>
+                    <td>{{ question.data }}</td>
+                    <td>
+                        <a href="{{ url_for('admin_delete_question',q_id=question.q_id) }}" class="btn btn-primary" role="button">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+
+
+        </table>
+    </div>
+{% endblock body %}

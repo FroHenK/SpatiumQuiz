@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+    {% if session['admin_id'] %}
+<a href="{{ url_for('admin_add_quiz') }}" class="btn btn-primary" role="button">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add quiz
+</a>
+{% endif %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Викторины</div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Начало</th>
+            <th>Конец</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for quiz in quizez %}
+
+        <tr class='clickable-row' data-href='url://127.0.0.1:5000/1'>
+            <td>{{ quiz.name }}</td>
+            <td>{{ quiz.start}}</td>
+            <td>{{ quiz.finish}}</td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+
+
+    </table>
+</div>
+{% endblock body %}

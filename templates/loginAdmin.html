@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+    {% if entered_wrong_creds %}
+        <div class="alert alert-danger" role="alert">Wrong password/login</div>
+    {% endif %}
+
+      <form action="{{ url_for('login_admin') }}" method="post">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input style="width: 45%"  type="text" name="login" class="form-control" placeholder="Login">
+        <input style="width: 45%" type="password" name="password" class="form-control" placeholder="Password">
+        <button  class="btn btn-lg btn-primary" type="submit">Sign in</button>
+      </form>
+
+{% endblock body %}

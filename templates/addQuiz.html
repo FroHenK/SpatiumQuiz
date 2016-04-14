@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h1>Gona add quiz?</h1>
+    <form action="{{ url_for ('admin_add_quiz') }}" method="post">
+        <label>
+            <h4>Name of quiz</h4>
+            <input type="text" name="quiz_name">
+            <h4>Date and time of start and finish</h4>
+            <input type="datetime-local" name="quiz_datetime1">
+            <br>
+            <input type="datetime-local" name="quiz_datetime2">
+            <br>
+            <input class="btn btn-default" type="submit" value="Submit">
+        </label>
+
+
+    </form>
+{% endblock body %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spatium Quiz</title>
+
+    <script src="{{ url_for('static',filename='js/jquery-2.2.3.min.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap-theme.min.css') }}">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+
+</head>
+<body>
+<!--Design idea is from NEFU's testing system-->
+<div class="container" style="width: 940px !important;">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>Spatium Quiz</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-9">
+
+            {% block body %}{% endblock %}
+
+        </div>
+        <div class="col-xs-3">
+            <nav class="navbar navbar-default" role="navigation">
+                <ul class="nav nav-pills nav-stacked">
+
+                    <li>
+                        <a href="{{ url_for("main_page") }}">Главная</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for("admin_panel") }}">Администрация</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
