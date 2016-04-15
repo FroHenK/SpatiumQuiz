@@ -1,0 +1,20 @@
+<form action="{{ action }}" method="post">
+    {% if empty %}
+
+    {% endif %}
+    <label>
+        <h4>Question</h4>
+        <input type="text" name="question_question" value="{{ question.question }}">
+        <h4>Answer</h4>
+        <input type="text" name="question_answer" value="{{ question.answer }}">
+        <br>
+        <input type="checkbox" name="question_match_case" value="True" {%if question.match_case %}
+        checked
+        {% endif %}>Match Case<br>
+        <br>
+        <input class="btn btn-default" type="submit" value="Submit">
+    </label>
+
+
+</form>
+<!--This is so modest because I'm willing to inject it with Javascript later -->

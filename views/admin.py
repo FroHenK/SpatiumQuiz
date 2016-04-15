@@ -1,7 +1,8 @@
 from views import app
 from flask import request, render_template, session, redirect, url_for
-from sqldb import get_admin, add_quiz, fetch_all_questions_by_eid
-from Quiz import Quiz
+from sqldb import get_admin, add_quiz, fetch_all_questions_by_eid, fetch_quiz_by_id, fetch_question_by_id, \
+    update_question, add_question, delete_question_by_id
+from Quiz import Quiz, question_types
 import dateutil.parser
 
 ADMIN_ID = 'admin_id'
@@ -33,6 +34,7 @@ def admin_panel():
     return render_template('indexAdmin.html')
 
 
+# Quizzes and questions
 @app.route('/admin/add_quiz/', methods=['POST', 'GET'])
 def admin_add_quiz():
     if ADMIN_ID not in session:
@@ -48,12 +50,46 @@ def admin_add_quiz():
     return render_template('addQuiz.html')
 
 
-# Quizzes and questions
+@app.route('/admin/quiz/add_question/<quiz_id>/<question_type>', methods=['POST', 'GET'])
+def admin_add_question(quiz_id, question_type):
+    if ADMIN_ID not in session:
+        return redirect(url_for('login_admin'))
+    if request.method == 'POST':
+        question_new = question_types[question_type](quiz_id, 0, question_type, None)
+        question_new.edit_response_parse(request.form)
+        add_question(question_new)
+        return redirect(url_for('admin_quiz', quiz_id=question_new.e_id))
+
+    return question_types[question_type].add_page(
+        url_for('admin_add_question', quiz_id=quiz_id, question_type=question_type))
+
+
 @app.route('/admin/quiz/<quiz_id>/')
 def admin_quiz(quiz_id):
-    return render_template('showQuizAdmin.html', questions=fetch_all_questions_by_eid(quiz_id))
+    if ADMIN_ID not in session:
+        return redirect(url_for('login_admin'))
+    return render_template('showQuizAdmin.html', current_quiz=fetch_quiz_by_id(quiz_id),
+                           questions=fetch_all_questions_by_eid(quiz_id), question_types=question_types)
+
+
+@app.route('/admin/question/edit/<q_id>/', methods=['POST', 'GET'])
+def admin_edit_question(q_id):
+    if ADMIN_ID not in session:
+        return redirect(url_for('login_admin'))
+    question_by_id = fetch_question_by_id(q_id)
+
+    if request.method == 'POST':
+        question_by_id.edit_response_parse(request.form)
+        update_question(question_by_id)
+        return redirect(url_for('admin_quiz', quiz_id=question_by_id.e_id))
+
+    return question_by_id.edit_page(url_for('admin_edit_question', q_id=question_by_id.q_id))
 
 
 @app.route('/admin/question/delete/<q_id>/')
 def admin_delete_question(q_id):
-    return 'Oops... Not implemented yet'  # TODO Implement
+    if ADMIN_ID not in session:
+        return redirect(url_for('login_admin'))
+    question_by_id = fetch_question_by_id(q_id)
+    delete_question_by_id(q_id)
+    return redirect(url_for('admin_quiz', quiz_id=question_by_id.e_id))

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h3>{{ current_quiz.name }}</h3>
+    {% if session['admin_id'] %}
+<a href="{{ url_for('admin_quiz',quiz_id=current_quiz.id) }}" class="btn btn-primary" role="button">
+  Modify it
+</a>
+{% endif %}
+<h1>Not a lot here... TODO: Make it look better</h1>
+
+{% endblock body %}

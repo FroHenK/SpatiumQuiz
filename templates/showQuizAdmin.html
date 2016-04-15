@@ -1,5 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
+    <h3>{{ current_quiz.name }}</h3>
+    {% for question_type in question_types %}
+    <a href="{{ url_for('admin_add_question',quiz_id=current_quiz.id,question_type=question_type) }}" class="btn btn-primary"
+                           role="button">
+                            Add {{ question_type }}
+                        </a>
+    {% endfor %}
+
 
     <div class="panel panel-default">
         <div class="panel-heading">Questions</div>
@@ -10,6 +18,7 @@
                 <th>#</th>
                 <th>Type</th>
                 <th>Data</th>
+                <th>Edit</th>
                 <th>Delete</th>
             </tr>
             </thead>
@@ -21,7 +30,14 @@
                     <td>{{ question.type }}</td>
                     <td>{{ question.data }}</td>
                     <td>
-                        <a href="{{ url_for('admin_delete_question',q_id=question.q_id) }}" class="btn btn-primary" role="button">
+                        <a href="{{ url_for('admin_edit_question',q_id=question.q_id) }}" class="btn btn-primary"
+                           role="button">
+                            Edit
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('admin_delete_question',q_id=question.q_id) }}" class="btn btn-primary"
+                           role="button">
                             Delete
                         </a>
                     </td>

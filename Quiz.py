@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import json
+from flask import render_template
 
 
 class Quiz:
@@ -36,15 +37,23 @@ class Question:
     def data_to_string(self):
         pass
 
+    @abstractmethod
+    def edit_page(self, action):
+        pass
+
+    @abstractmethod
+    def show_question(self, answer_id_name):
+        pass
+
 
 class TextAnswerQuestion(Question):
     """has 'answer', 'question', 'match_case'"""
 
     def __init__(self, e_id, q_id, q_type, data):
-        super().__init__(e_id, q_id, q_type, data)
-        self.answer = 'None'
-        self.question = 'None'
+        self.answer = ''
+        self.question = ''
         self.match_case = True
+        super().__init__(e_id, q_id, q_type, data)
 
     def data_to_string(self):
         return json.dumps({'answer': self.answer
@@ -58,11 +67,25 @@ class TextAnswerQuestion(Question):
         return str(answer) == str(self.answer)
 
     def parse_data(self, data):
-
         loads = json.loads(str(data))
         self.answer = loads['answer']
         self.question = loads['question']
         self.match_case = loads['match_case']
 
+    def edit_page(self, action):
+        return render_template('questions/editTextAnswerQuestion.html', action=action, question=self)
 
-question_types = {TextAnswerQuestion.__name__:TextAnswerQuestion}
+    @staticmethod
+    def add_page(action):
+        return render_template('questions/editTextAnswerQuestion.html', action=action, question=None)
+
+    def edit_response_parse(self, forms):
+        self.answer = forms['question_answer']
+        self.question = forms['question_question']
+        self.match_case = 'question_match_case' in forms
+
+    def show_question(self, answer_id_name):
+        render_template('questions/showTextAnswerQuestion.html', answer_id_name=answer_id_name, question=self)
+
+
+question_types = {TextAnswerQuestion.__name__: TextAnswerQuestion}
