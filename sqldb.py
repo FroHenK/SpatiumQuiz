@@ -11,7 +11,7 @@ import hashlib
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect("C:\\Project\\PythonProjects\\SpatiumQuiz\\spatiumdb.db",
+        db = g._database = sqlite3.connect("spatiumdb.db",
                                            detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
 
     return db

@@ -28,4 +28,4 @@ if __name__ == '__main__':
 
     views.init(app)
 
-    app.run(debug=True)
+    app.run(debug=True,)
