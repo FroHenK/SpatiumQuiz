@@ -6,7 +6,7 @@ User registration/authorization.
 Javascript Quiz UI.
 User's quiz participation.
 Quiz start and finish time.
-
+Also it has some Unicode problems.
 
 Flask	0.10.1	0.10.1
 Jinja2	2.8	2.8

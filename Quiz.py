@@ -10,7 +10,6 @@ class Quiz:
         self.name = name
         self.start = start
         self.finish = finish
-        super().__init__()
 
 
 class Question:
