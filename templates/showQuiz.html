@@ -6,6 +6,12 @@
   Modify it
 </a>
 {% endif %}
-<h1>Not a lot here... TODO: Make it look better</h1>
-
+<h1>TODO: Make it look better</h1>
+<form action="{{ url_for('commit_quiz',quiz_id=current_quiz.id) }}" method="post">
+{% for question in questions %}
+{{ Markup(question.show_question(question.q_id)) }}
+{% endfor %}
+<br>
+<input class="btn btn-default" type="submit" value="Submit">
+</form>
 {% endblock body %}

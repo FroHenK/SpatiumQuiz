@@ -1,0 +1,39 @@
+<h5>{{ question.question }}</h5>
+<div id="googleMap{{ answer_id_name }}" style="width: 300px;height: 300px;"></div>
+<script>
+        var map;
+        {% if question %}
+        var startingPoint = new google.maps.LatLng({{ question.lat }},{{ question.lon }});
+        {% else %}
+        var startingPoint = new google.maps.LatLng({{ 62.0355 }},{{ 129.6755 }});
+
+        {% endif %}
+        var marker = new google.maps.Marker({
+            position: startingPoint,
+
+        });
+
+
+
+        function initialize() {
+
+            var mapDiv = document.getElementById('googleMap{{ answer_id_name }}');
+            var myOptions = {
+                zoom: 12,
+                center: startingPoint,
+                panControl:true,
+    zoomControl:true,
+    mapTypeControl:false,
+    scaleControl:true,
+    streetViewControl:false,
+    overviewMapControl:false,
+    rotateControl:true,
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+            };
+            map = new google.maps.Map(mapDiv, myOptions);
+            marker.setMap(map)
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+<input type="text" id="{{ answer_id_name }}" name="{{ answer_id_name }}">

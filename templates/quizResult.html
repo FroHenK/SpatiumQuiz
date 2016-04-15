@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>Congrats, your score is {{ your_score }} out of {{ total_score }}</h1>
+<a href="/quiz/{{ current_quiz.id }}/" class="btn btn-primary" role="button">
+                            Go back
+                        </a>
+{% endblock body %}
