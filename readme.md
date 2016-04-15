@@ -2,10 +2,15 @@ This little program wants to be easy-to-use and very flexible quiz web system.
 Uses Python 3.4.3 and higher
 
 This project TODO-S:
+
 Error handling.
+
 User registration/authorization.
+
 Javascript Quiz UI.
+
 User's quiz participation.
+
 Quiz start and finish time.
 
 Flask	0.10.1	0.10.1
