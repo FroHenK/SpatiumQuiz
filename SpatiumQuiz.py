@@ -5,12 +5,12 @@ from Quiz import TextAnswerQuestion
 import re
 
 from jinja2 import evalcontextfilter, Markup, escape
+
 '''Tested on Python 3.5.1'''
 
 app = Flask(__name__)
 # keep this really secret
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
 
 
 @app.route('/')
@@ -28,4 +28,4 @@ if __name__ == '__main__':
 
     views.init(app)
 
-    app.run(debug=True,)
+    app.run(debug=True, host='0.0.0.0', port=80)
