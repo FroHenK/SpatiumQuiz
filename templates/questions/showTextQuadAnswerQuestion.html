@@ -1,0 +1,8 @@
+<h4>{{ question.question }}</h4>
+{% if question.img!='None' and question.img!=None %}
+<img src="{{question.img }}" style="width: 300px"/><br>
+{% endif %}
+{% for n,i in g.enumerate(question.answers) %}
+    <input type="radio" name="{{ answer_id_name }}" value="{{ n }}" checked="checked"/>
+    <text>{{ i }}</text><br>
+{% endfor %}

@@ -1,10 +1,10 @@
 from views import app
 from flask import request, render_template, session, redirect, url_for
 from sqldb import get_admin, add_quiz, fetch_all_questions_by_eid, fetch_quiz_by_id, fetch_question_by_id, \
-    update_question, add_question, delete_question_by_id
+    update_question, add_question, delete_question_by_id,delete_quiz_by_id
 from Quiz import Quiz, question_types
 import dateutil.parser
-
+import datetime
 ADMIN_ID = 'admin_id'
 
 
@@ -41,10 +41,10 @@ def admin_add_quiz():
         return redirect(url_for('login_admin'))
     if request.method == 'POST':
         quiz_name = str(request.form['quiz_name'])
-        quiz_datetime1 = dateutil.parser.parse(request.form['quiz_datetime1'])
-        quiz_datetime2 = dateutil.parser.parse(request.form['quiz_datetime2'])
-        add_quiz(Quiz(0, quiz_name, min(quiz_datetime1, quiz_datetime2), max(quiz_datetime1, quiz_datetime2)))
-
+        #quiz_datetime1 = dateutil.parser.parse(request.form['quiz_datetime1'])
+       # quiz_datetime2 = dateutil.parser.parse(request.form['quiz_datetime2'])
+        #add_quiz(Quiz(0, quiz_name, min(quiz_datetime1, quiz_datetime2), max(quiz_datetime1, quiz_datetime2)))
+        add_quiz(Quiz(0, quiz_name, datetime.datetime.now(), datetime.datetime.now()))#TODO do something with datetimes
         return redirect(url_for('main_page'))
 
     return render_template('addQuiz.html')
@@ -70,6 +70,14 @@ def admin_quiz(quiz_id):
         return redirect(url_for('login_admin'))
     return render_template('showQuizAdmin.html', current_quiz=fetch_quiz_by_id(quiz_id),
                            questions=fetch_all_questions_by_eid(quiz_id), question_types=question_types)
+
+
+@app.route('/admin/quiz/remove/<quiz_id>/')
+def admin_remove_quiz(quiz_id):
+    if ADMIN_ID not in session:
+        return redirect(url_for('login_admin'))
+    delete_quiz_by_id(quiz_id)
+    return redirect(url_for('main_page'))
 
 
 @app.route('/admin/question/edit/<q_id>/', methods=['POST', 'GET'])

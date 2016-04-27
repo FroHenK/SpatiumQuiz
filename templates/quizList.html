@@ -15,8 +15,9 @@
         <thead>
         <tr>
             <th>Название</th>
-            <th>Начало</th>
-            <th>Конец</th>
+            {% if session['admin_id'] %}
+<th>Удалить</th>
+{% endif %}
         </tr>
         </thead>
         <tbody>
@@ -24,8 +25,9 @@
 
         <tr class='clickable-row' data-href='url://127.0.0.1:5000/1'>
             <td><a href="{{ url_for('view_quiz_main',quiz_id=quiz.id) }}"> {{ quiz.name }}</a></td>
-            <td>{{ quiz.start}}</td>
-            <td>{{ quiz.finish}}</td>
+            {% if session['admin_id'] %}
+<td><a href="{{ url_for('admin_remove_quiz',quiz_id=quiz.id) }}"> Удалить</a></td>
+{% endif %}
         </tr>
         {% endfor %}
 

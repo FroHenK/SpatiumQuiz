@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,g
 
 from sqldb import fetch_all_quizzes
 from Quiz import TextAnswerQuestion
@@ -18,6 +18,9 @@ def main_page():
     t = fetch_all_quizzes()
     return render_template("quizList.html", quizzes=t)
 
+@app.before_request
+def before_request():
+    g.enumerate = enumerate
 
 def get_app():
     return app
@@ -28,4 +31,5 @@ if __name__ == '__main__':
 
     views.init(app)
 
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80,threaded=True)
+

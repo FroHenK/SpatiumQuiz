@@ -43,6 +43,14 @@ class Question:
         pass
 
     @abstractmethod
+    def answer_str(self, answer_form):
+        pass
+
+    @abstractmethod
+    def question_str(self):
+        pass
+
+    @abstractmethod
     def show_question(self, answer_id_name):
         pass
 
@@ -80,6 +88,12 @@ class TextAnswerQuestion(Question):
     def add_page(action):
         return render_template('questions/editTextAnswerQuestion.html', action=action, question=None)
 
+    def answer_str(self, answer_form):
+        return str(answer_form)
+
+    def question_str(self):
+        return self.question
+
     def edit_response_parse(self, forms):
         self.answer = forms['question_answer']
         self.question = forms['question_question']
@@ -97,7 +111,7 @@ class PointOnMapQuestion(Question):
         self.answer = ''
         self.question = ''
         self.match_case = True
-        self.lat=0.0
+        self.lat = 0.0
         self.lon = 0.0
 
         super().__init__(e_id, q_id, q_type, data)
@@ -134,12 +148,79 @@ class PointOnMapQuestion(Question):
         self.answer = forms['question_answer']
         self.question = forms['question_question']
         self.match_case = 'question_match_case' in forms
-        self.lat=forms['question_lat']
+        self.lat = forms['question_lat']
         self.lon = forms['question_lon']
+
+    def answer_str(self, answer_form):
+        return str(answer_form)
+
+    def question_str(self):
+        return self.question
 
     # needs Markup()
     def show_question(self, answer_id_name):
         return render_template('questions/showPointOnMapQuestion.html', answer_id_name=answer_id_name, question=self)
 
 
-question_types = {TextAnswerQuestion.__name__: TextAnswerQuestion,PointOnMapQuestion.__name__: PointOnMapQuestion}
+class TextQuadAnswerQuestion(Question):
+    """has 'answer', 'question', 'match_case'"""
+
+    def __init__(self, e_id, q_id, q_type, data):
+        self.answers = []
+        self.correctID = 0
+        self.question = ''
+        self.img = 'None'
+        super().__init__(e_id, q_id, q_type, data)
+
+    def answer_str(self, answer_form):
+        return self.answers[int(answer_form)]
+
+    def question_str(self):
+        return self.question
+
+    def data_to_string(self):
+        return json.dumps({'answers': self.answers
+                              , 'question': self.question
+                              , 'correctID': self.correctID
+                              , 'img': self.img})
+
+    def is_answer_true(self, answer_id):
+        return int(answer_id) == int(self.correctID)
+
+    def parse_data(self, data):
+        loads = json.loads(str(data))
+        self.answers = loads['answers']
+        self.question = loads['question']
+        self.correctID = loads['correctID']
+        self.img = loads['img']
+
+    def edit_page(self, action):
+        return render_template('questions/editTextQuadAnswerQuestion.html', action=action, question=self,
+                               enumerate=enumerate)
+
+    @staticmethod
+    def add_page(action):
+        question_none = TextQuadAnswerQuestion
+        question_none.correctID = 0
+        question_none.img = 'None'
+        question_none.question = ''
+        question_none.answers = [''] * 4
+        return render_template('questions/editTextQuadAnswerQuestion.html', action=action, question=question_none,
+                               enumerate=enumerate)
+
+    def edit_response_parse(self, forms):
+        self.answers = [forms['question_answer0'], forms['question_answer1'], forms['question_answer2'],
+                        forms['question_answer3']]
+        self.question = forms['question_question']
+        self.img = forms['question_img']
+        self.correctID = int(forms['question_correctID'])
+
+    # needs Markup()
+    def show_question(self, answer_id_name):
+        return render_template('questions/showTextQuadAnswerQuestion.html', answer_id_name=answer_id_name,
+                               question=self)
+
+
+question_types = {TextAnswerQuestion.__name__: TextAnswerQuestion,
+                  PointOnMapQuestion.__name__: PointOnMapQuestion,
+                  TextQuadAnswerQuestion.__name__: TextQuadAnswerQuestion}

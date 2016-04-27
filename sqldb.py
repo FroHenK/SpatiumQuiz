@@ -11,7 +11,7 @@ import hashlib
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect("C:\\Project\\PythonProjects\\SpatiumQuiz\\spatiumdb.db",
+        db = g._database = sqlite3.connect("spatiumdb.db",
                                            detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
 
     return db
@@ -60,7 +60,8 @@ def fetch_all_questions_by_eid(e_id):
     conn = get_db()
     questions = []
     cur = conn.cursor()
-    for var in cur.execute('SELECT e_id,id,type,data  FROM questions  WHERE e_id=? ORDER BY id ASC', (str(e_id))).fetchall():
+    for var in cur.execute('SELECT e_id,id,type,data  FROM questions  WHERE e_id=? ORDER BY id ASC',
+                           (str(e_id))).fetchall():
         questions.append(question_types[str(var[2])](
             int(var[0]),
             int(var[1]),
@@ -115,5 +116,13 @@ def delete_question_by_id(question_id):
     conn = get_db()
     cur = conn.cursor()
     cur.execute('DELETE FROM questions WHERE id=?', question_id)
+    conn.commit()
+    cur.close()
+
+
+def delete_quiz_by_id(quiz_id):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM quiz WHERE id=?', quiz_id)
     conn.commit()
     cur.close()

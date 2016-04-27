@@ -1,0 +1,19 @@
+<!-- Warning! If in JS or just inserted, use HEAD instead-->
+
+<form action="{{ action }}" method="post">
+
+    <label>
+        <input type="text" name="question_question" value="{{ question.question }}"><br>
+        <input type="text" name="question_img" value="{{ question.img}}"><br>
+        {% for n,i in g.enumerate(question.answers) %}
+
+            <input type="radio" {% if n== question.correctID%} checked="checked"
+            {% endif %} name="question_correctID" value="{{ n }}"/>
+            <input type="text" name="question_answer{{ n }}" value="{{ i }}"><br>
+        {% endfor %}
+     <input class="btn btn-default" type="submit" value="Submit">
+    </label>
+
+
+</form>
+<!--This is so modest because I'm willing to inject it with Javascript later -->

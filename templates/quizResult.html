@@ -1,7 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
-<h1>Congrats, your score is {{ your_score }} out of {{ total_score }}</h1>
-<a href="/quiz/{{ current_quiz.id }}/" class="btn btn-primary" role="button">
-                            Go back
-                        </a>
+    <h3>Congrats, your score is {{ your_score }} out of {{ total_score }}</h3>
+    <a href="/quiz/{{ current_quiz.id }}/" class="btn btn-primary" role="button">
+        Go back
+    </a>
+    {% for n,i in g.enumerate(correct_bool) %}
+    {% if i %}
+<div class="alert alert-success" role="alert">"{{  answer_str[n]}}" is correct for  "{{  question_str[n]}}"</div>
+    {% else %}
+    <div class="alert alert-danger" role="alert">"{{  answer_str[n]}}"  is incorrect for "{{  question_str[n]}}"</div>
+    {% endif %}
+    {% endfor %}
 {% endblock body %}
